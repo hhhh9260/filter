@@ -1,0 +1,81 @@
+{
+  id: 233,
+  name: '酷安开屏自定义订阅',
+  version: 1,
+  author: '自定义',
+  categories: [],
+
+  globalGroups: [],
+
+  apps: [
+    // ==========================================
+    // 酷安 (com.coolapk.market) 开屏广告规则
+    // ==========================================
+    {
+      id: 'com.coolapk.market',
+      name: '酷安',
+      groups: [
+        {
+          key: -1,
+          name: '开屏广告',
+          actionMaximumKey: 0,
+          actionMaximum: 1,
+          matchTime: 15000,
+          resetMatch: 'app',
+          excludeActivityIds: [
+            '.view.search.',
+            '.view.feed.',
+            '.view.node.DynamicNodePageActivity',
+          ],
+          rules: [
+            {
+              key: 0,
+              anyMatches: [
+                '@View[text=null][clickable=true][childCount=0][visibleToUser=true][width<200&&height<200] +(1,2) TextView[index=parent.childCount.minus(1)][childCount=0] <n FrameLayout[childCount>2][text=null][desc=null] >(n+6) [text*="第三方应用" || text*="扭动手机" || text*="点击或上滑" || text*="省钱好物" || text*="扭一扭"][visibleToUser=true]',
+                'FrameLayout > FrameLayout[childCount>2][text=null][desc=null] > @View[text=null][clickable=true][childCount=0][visibleToUser=true][width<200&&height<200] +(1,2) TextView[index=parent.childCount.minus(1)][childCount=0][visibleToUser=true]',
+              ],
+              fastQuery: true,
+            },
+            {
+              key: 1,
+              matches: [
+                '[!(id="com.coolapk.market:id/item_view") && !(vid="card_view")] > [text*="跳过"][text.length<10][width<500 && height<300][visibleToUser=true]',
+              ],
+              fastQuery: true,
+            },
+            {
+              key: 2,
+              matches: [
+                '@View[clickable=true][text=null][width<200&&height<200][visibleToUser=true] <n FrameLayout[childCount>1] < [text*="广告" || text*="第三方"]',
+              ],
+              fastQuery: true,
+            },
+          ],
+        },
+      ],
+    },
+
+    // ==========================================
+    // Launcher 劫持规则 (ColorOS/OPPO 用户必需)
+    // ==========================================
+    {
+      id: 'com.android.launcher',
+      name: '桌面(劫持用)',
+      groups: [
+        {
+          key: 888,
+          name: '开屏广告-劫持',
+          matchTime: 10000,
+          actionMaximum: 1,
+          resetMatch: 'app',
+          rules: [
+            {
+              fastQuery: true,
+              matches: '[text*="跳过"][text.length<10][visibleToUser=true]',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
